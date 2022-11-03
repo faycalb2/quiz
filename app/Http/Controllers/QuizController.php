@@ -17,7 +17,10 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $quizzes = Quiz::all();
+        $quizzes = Quiz::with('users')->whereHas('users', function ($query) {
+            $query->where('user_id', auth()->user()->id);
+        })->get();
+
         return Inertia::render('Quiz/Index', ['quizzes' => $quizzes]);
     }
 
@@ -39,9 +42,14 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'name' => 'required',
+            'quizData' => 'required',
+        ]);
+
         Quiz::create([
-            'name' => $request->name,
-            'quizData' => $request->quizData
+            'name' => $validated['name'],
+            'quizData' => $validated['quizData']
         ]);
     }
 

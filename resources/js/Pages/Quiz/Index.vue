@@ -1,18 +1,20 @@
 <script>
-   export default {
-    propos: {
-        quizzes: Object
+    import Layout from '../../Layouts/Layout.vue';
+    import { Head } from '@inertiajs/inertia-vue3';
+
+    export default {
+        props: {quizzes: Object},
+        components: { Layout }
     }
-   } 
 </script>
 
 <template>
-    <div class="p-8">
-        <h1>Quizzes</h1>
-        <ul>
-            <li v-for="quiz in $page.props.quizzes">
-                {{ quiz.name }}
-            </li>
+    <Head title="Dashboard" />
+
+    <Layout> 
+        <h1 class="text-center">Available Quizzes:</h1>
+        <ul v-for="quiz in quizzes" class="flex justify-between">
+            <li>{{ quiz.name }}</li>
         </ul>
-    </div>
+    </Layout>
 </template>
